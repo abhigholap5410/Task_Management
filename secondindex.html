@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Planner</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+  }
+  th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+<h1>Task Planner</h1>
+<div>
+ 
+  <label for="parentTaskId">Parent Task ID:</label>
+  <input type="text" id="parentTaskId">
+  <label for="parentStartDate">Start Date:</label>
+  <input type="date" id="parentStartDate">
+  <label for="parentEndDate">End Date:</label>
+  <input type="date" id="parentEndDate">
+  <label for="parentStatus">Status:</label>
+  <select id="parentStatus">
+    <option value="Due-Passed">Due-Passed</option>
+    <option value="In-Progress">In-Progress</option>
+    <option value="Completed">Completed</option>
+    <option value="Canceled">Canceled</option>
+  </select>
+  <button id="addParentTask">Add Parent Task</button>
+ 
+</div>
+<table id="taskTable">
+  <tr>
+    <th>Parent Task ID</th>
+    <th>Subtask ID</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Status</th>
+    <th>Add Subtask</th>
+  </tr>
+</table>
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Add Subtask</h2>
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate">
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate">
+    <label for="status">Status:</label>
+    <select id="status">
+      <option value="In-Progress">In-Progress</option>
+      <option value="Completed">Completed</option>
+      <option value="Canceled">Canceled</option>
+    </select>
+    <button id="addSubtask">Add Subtask</button>
+  </div>
+</div>
+<script>
+  const taskTable = document.getElementById('taskTable');
+  const parentTaskIdInput = document.getElementById('parentTaskId');
+  const addParentTaskBtn = document.getElementById('addParentTask');
+  const modal = document.getElementById('modal');
+  const closeModalBtn = document.querySelector('.close');
+  const addSubtaskBtn = document.getElementById('addSubtask');
+  const startDateInput = document.getElementById('startDate');
+  const endDateInput = document.getElementById('endDate');
+  const statusSelect = document.getElementById('status');
+  let subtaskIdCounter = 1;
+
+  addParentTaskBtn.addEventListener('click', () => {
+    const parentTaskId = parentTaskIdInput.value;
+    if (!parentTaskId) {
+      alert('Please enter a parent task ID');
+      return;
+    }
+  // ... (previous code remains the same) ...
+  
+  
+  const parentStartDate = new Date(parentStartDateInput.value);
+  const parentEndDate = new Date(parentEndDateInput.value);
+  const currentDate = new Date();
+  const parentStatus = getStatus(parentStartDate, parentEndDate, currentDate, parentStatusSelect.value);
+
+  const newRow = taskTable.insertRow();
+  const parentTaskIdCell = newRow.insertCell(0);
+  const subtaskIdCell = newRow.insertCell(1);
+  const startDateCell = newRow.insertCell(2);
+  const endDateCell = newRow.insertCell(3);
+  const statusCell = newRow.insertCell(4);
+  const addSubtaskCell = newRow.insertCell(5);
+
+  parentTaskIdCell.innerText = parentTaskId;
+  subtaskIdCell.innerText = '-';
+  startDateCell.innerText = formatDate(parentStartDate);
+  endDateCell.innerText = formatDate(parentEndDate);
+  statusCell.innerText = parentStatus;
+  addSubtaskCell.innerHTML = `<button data-parent-id="${parentTaskId}" class="addSubtaskBtn">Add Subtask</button>`;
+});
+
+
+function formatDate(date) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString(undefined, options);
+}
+
+addSubtaskBtn.addEventListener('click', () => {
+  const parentId = addSubtaskBtn.getAttribute('data-parent-id');
+  const subtaskId = subtaskIdCounter++;
+  const startDate = new Date(startDateInput.value);
+  const endDate = new Date(endDateInput.value);
+  const currentDate = new Date();
+  const subtaskStatus = getStatus(startDate, endDate, currentDate, statusSelect.value);
+
+  // ... (similar logic to previous version) ...
+
+})
+// ... (getStatus function remains the same) ...
+
+// ... (event listeners remain the same) ...
+
+    const newRow = taskTable.insertRow();
+    const parentTaskIdCell = newRow.insertCell(0);
+    const subtaskIdCell = newRow.insertCell(1);
+    const startDateCell = newRow.insertCell(2);
+    const endDateCell = newRow.insertCell(3);
+    const statusCell = newRow.insertCell(4);
+    const addSubtaskCell = newRow.insertCell(5);
+    parentTaskIdCell.innerText = parentTaskId;
+    subtaskIdCell.innerText = '-';
+    startDateCell.innerText = '-';
+    endDateCell.innerText = '-';
+    statusCell.innerText = '-';
+    addSubtaskCell.innerHTML = `<button data-parent-id="${parentTaskId}" class="addSubtaskBtn">Add Subtask</button>`;
+
+
+  taskTable.addEventListener('click', (e) => {
+    if (e.target.classList.contains('addSubtaskBtn')) {
+      const parentId = e.target.getAttribute('data-parent-id');
+      modal.style.display = 'block';
+      addSubtaskBtn.setAttribute('data-parent-id', parentId);
+    }
+  });
+
+  closeModalBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  addSubtaskBtn.addEventListener('click', () => {
+    const parentId = addSubtaskBtn.getAttribute('data-parent-id');
+    const subtaskId = subtaskIdCounter++;
+    const startDate = startDateInput.value;
+    const endDate = endDateInput.value;
+    const status = statusSelect.value;
+
+    const newRow = taskTable.insertRow();
+    const parentTaskIdCell = newRow.insertCell(0);
+    const subtaskIdCell = newRow.insertCell(1);
+    const startDateCell = newRow.insertCell(2);
+    const endDateCell = newRow.insertCell(3);
+    const statusCell = newRow.insertCell(4);
+    const addSubtaskCell = newRow.insertCell(5);
+
+    parentTaskIdCell.innerText = parentId;
+    subtaskIdCell.innerText = subtaskId;
+    startDateCell.innerText = startDate;
+    endDateCell.innerText = endDate;
+    statusCell.innerText = status;
+    addSubtaskCell.innerHTML = `<button data-parent-id="${parentId}" class="addSubtaskBtn">Add Subtask</button>`;
+
+    modal.style.display = 'none';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+</script>
+</body>
+</html>

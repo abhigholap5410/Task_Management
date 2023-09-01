@@ -1,0 +1,88 @@
+
+body, h1, h2, form {
+  margin: 0;
+  padding: 0;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  
+}
+
+
+
+h1{
+  display: flex;
+  justify-content: center ;
+}
+
+
+.task-form {
+
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-left: 40%;
+  width: 300px;
+}
+
+
+.task-list {
+  margin-top: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+select:disabled {
+  background-color: #f2f2f2;
+}
+
+input[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+.subtaskbody{
+  background-color: #007bff;
+}
+
+
+@media screen and (max-width: 480px) {
+  .task-form {
+      width: 90%;
+  }
+}
